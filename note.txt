@@ -1,0 +1,90 @@
+Cài đặt PostgreSQL
+
+# Cập nhật package list
+
+sudo apt update
+
+# Cài đặt PostgreSQL
+
+sudo apt install postgresql postgresql-contrib -y
+
+# Kiểm tra phiên bản
+
+psql --version
+
+# Khởi động PostgreSQL service
+
+sudo service postgresql start
+
+# Kiểm tra trạng thái
+
+sudo service postgresql status
+
+Cấu hình PostgreSQL
+
+# Chuyển sang user postgres
+
+sudo -i -u postgres
+
+# Truy cập PostgreSQL shell
+
+psql
+
+# Tạo database và user
+
+CREATE DATABASE file_sharing_db;
+CREATE USER file_sharing_user WITH PASSWORD 'your_password_here';
+GRANT ALL PRIVILEGES ON DATABASE file_sharing_db TO file_sharing_user;
+
+# Thoát psql
+
+\q
+
+# Thoát user postgres
+
+exit
+
+# Kết nối vào database
+
+psql -U postgres -d file_share_db -h localhost
+
+# Lưu script trên vào file create_schema.sql
+
+# Sau đó chạy:
+
+psql -U file_sharing_user -d file_sharing_db -h localhost -f create_schema.sql
+
+## Chay server
+
+# Cài đặt thư viện
+
+sudo apt-get install libpq-dev libjson-c-dev libssl-dev uuid-dev
+
+# Tạo database
+
+psql -U postgres -c "CREATE DATABASE fileshare;"
+psql -U postgres -d fileshare -f schema.sql
+
+# Biên dịch
+
+cd server
+make
+
+# Chạy
+
+./server
+
+## Chay client
+
+# Cài đặt thư viện
+
+sudo apt-get install libjson-c-dev
+
+# Biên dịch
+
+cd client
+make
+
+# Chạy
+
+./client
